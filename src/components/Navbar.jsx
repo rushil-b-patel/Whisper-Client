@@ -4,45 +4,121 @@ import User from '../ui/User';
 import { useAuth } from '../context/AuthContext';
 import { useEffect, useRef, useState } from 'react';
 import { Search } from '../ui/Icons';
+import { usePostService } from '../context/PostContext';
 
 function Navbar() {
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { searchPosts } = usePostService();
 
   const [showSearch, setShowSearch] = useState(false);
-  const searchRef = useRef(null);
+  const desktopSearchRef = useRef(null);
+  const mobileSearchRef = useRef(null);
+
+  const [query, setQuery] = useState('');
+  const [results, setResults] = useState([]);
+  const [showDropdown, setShowDropdown] = useState(false);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (searchRef.current && !searchRef.current.contains(event.target)) {
-        setShowSearch(false);
+      if (
+        desktopSearchRef.current?.contains(event.target) ||
+        mobileSearchRef.current?.contains(event.target) ||
+        event.target.closest('.search-dropdown')
+      ) {
+        return;
+      }
+      setShowDropdown(false);
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    if (query.trim().length < 2) {
+      setResults([]);
+      setShowDropdown(false);
+      return;
+    }
+
+    const controller = new AbortController();
+
+    const fetchResults = async () => {
+      try {
+        const posts = await searchPosts(query);
+        if (!controller.signal.aborted) {
+          setResults(posts);
+          console.log(posts);
+          setShowDropdown(true);
+        }
+      } catch {
+        if (!controller.signal.aborted) {
+          setResults([]);
+          setShowDropdown(false);
+        }
       }
     };
 
-    if (showSearch) {
-      document.addEventListener('mousedown', handleClickOutside);
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside);
-    }
+    const timeout = setTimeout(fetchResults, 300);
+    return () => {
+      clearTimeout(timeout);
+      controller.abort();
+    };
+  }, [query]);
 
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [showSearch]);
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && query.trim()) {
+      navigate(`/search?q=${encodeURIComponent(query)}`);
+      setShowDropdown(false);
+      setShowSearch(false);
+    }
+  };
 
   return (
     <nav className="flex items-center justify-between h-16 px-4 md:px-10 dark:bg-[#0e1113] bg-white border-b dark:border-[#2A3236] border-gray-200 relative">
       <div className="flex items-center space-x-4">
         <WhisperLogo />
-        <div className="hidden lg:block w-64">
+
+        <div className="hidden lg:block w-64 relative" ref={desktopSearchRef}>
           <input
             type="text"
             placeholder="Search..."
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
             className="w-full px-3 py-2 text-sm rounded-lg bg-gray-100 dark:bg-[#2A3236] dark:text-white"
           />
+          {showDropdown && results.length > 0 && (
+            <div
+              className="absolute top-full left-0 right-0 mt-1 bg-white dark:bg-[#2A3236] 
+                    rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 
+                    max-h-72 overflow-y-auto z-50 search-dropdown"
+            >
+              <ul>
+                {results.map((post) => (
+                  <li key={post._id}>
+                    <Link
+                      to={`/post/${post._id}`}
+                      className="block px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      onClick={() => setShowDropdown(false)}
+                    >
+                      <div className="text-sm font-medium text-gray-900 dark:text-white">
+                        {post.title}
+                      </div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                        {post.tags?.map((tag) => `#${tag.name}`).join(' ')}
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
 
       <div className="flex items-center space-x-2 lg:space-x-4">
-        <div ref={searchRef} className="relative block md:hidden">
+        <div ref={mobileSearchRef} className="relative block md:hidden">
           {!showSearch && (
             <button
               onClick={() => setShowSearch(true)}
@@ -53,12 +129,42 @@ function Navbar() {
             </button>
           )}
           {showSearch && (
-            <input
-              type="text"
-              placeholder="Search..."
-              autoFocus
-              className="right-0 w-48 px-3 py-2 text-sm rounded-lg bg-gray-100 dark:bg-[#2A3236] dark:text-white border border-gray-300 dark:border-slate-700 transition"
-            />
+            <>
+              <input
+                type="text"
+                placeholder="Search..."
+                autoFocus
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="right-0 w-48 px-3 py-2 text-sm rounded-lg bg-gray-100 dark:bg-[#2A3236] dark:text-white border border-gray-300 dark:border-slate-700 transition"
+              />
+              {showDropdown && results.length > 0 && (
+                <div className="absolute left-0 right-0 mt-1 bg-white dark:bg-[#2A3236] rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 max-h-72 overflow-y-auto z-50 search-dropdown">
+                  <ul>
+                    {results.map((post) => (
+                      <li key={post._id}>
+                        <Link
+                          to={`/post/${post._id}`}
+                          className="block px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                          onClick={() => {
+                            setShowDropdown(false);
+                            setShowSearch(false);
+                          }}
+                        >
+                          <div className="text-sm font-medium text-gray-900 dark:text-white">
+                            {post.title}
+                          </div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                            {post.tags?.map((tag) => `#${tag.name}`).join(' ')}
+                          </div>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </>
           )}
         </div>
 

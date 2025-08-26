@@ -72,8 +72,7 @@ export default function CreatePost() {
         const already = allTags.some((t) => t.name.toLowerCase() === tagName.toLowerCase());
         if (!already) {
           try {
-            const saved = await saveTag(token, tagName);
-            const savedTag = saved?.tag ?? saved;
+            const savedTag = await saveTag(token, tagName);
             if (savedTag) {
               setAllTags((prev) => {
                 if (prev.some((t) => t.name.toLowerCase() === savedTag.name.toLowerCase()))

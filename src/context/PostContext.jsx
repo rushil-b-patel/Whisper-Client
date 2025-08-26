@@ -197,8 +197,8 @@ export const usePostService = () => {
     return execute(
       () =>
         axios.get(`${API}/tags`).then((res) => {
-          const d = res.data;
-          return d?.data?.tags ?? d?.tags ?? d;
+          const data = res.data;
+          return data.tags;
         }),
       'Failed to fetch tags'
     );
@@ -210,8 +210,8 @@ export const usePostService = () => {
         axios
           .post(`${API}/tags/add`, { name }, { headers: { Authorization: `Bearer ${token}` } })
           .then((res) => {
-            const d = res.data;
-            return d?.data?.tag ?? d?.tag ?? d;
+            const data = res.data;
+            return data.tag;
           }),
       'Failed to save tag'
     );
@@ -221,10 +221,21 @@ export const usePostService = () => {
     return execute(
       () =>
         axios.get(`${API}/tags/${encodeURIComponent(name)}`).then((res) => {
-          const d = res.data;
-          return d?.data ?? d;
+          const data = res.data;
+          return data;
         }),
       'Failed to load tag posts'
+    );
+  };
+
+  const searchPosts = async (query) => {
+    return execute(
+      () =>
+        axios.get(`${API}/post/search`, { params: { query } }).then((res) => {
+          const data = res.data;
+          return data.posts;
+        }),
+      'Failed to search posts'
     );
   };
 
@@ -247,6 +258,7 @@ export const usePostService = () => {
     getTag,
     saveTag,
     getPostsByTag,
+    searchPosts,
     isLoading,
     error,
   };

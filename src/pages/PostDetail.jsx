@@ -82,7 +82,6 @@ function PostDetail() {
     try {
       setIsLoading(true);
       await deletePost(localStorage.getItem('token'), id);
-      toast.success('Post deleted');
       navigate('/');
     } catch {
       toast.error('Failed to delete post');
