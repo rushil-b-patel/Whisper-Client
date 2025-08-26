@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePostService } from '../context/PostContext';
-import toast from 'react-hot-toast';
 import Editor from '../components/Editor';
 import { Combobox, ComboboxInput, ComboboxOption, ComboboxOptions } from '@headlessui/react';
+import { showError, showSuccess } from '../utils/toast';
 
 export default function CreatePost() {
   const [title, setTitle] = useState('');
@@ -61,7 +61,7 @@ export default function CreatePost() {
       content.blocks.every((block) => !block.data.text?.trim());
 
     if (!title.trim() || selectedTags.length === 0 || isDescriptionEmpty) {
-      toast.error('Title, at least one tag and a description are required');
+      showError('Title, at least one tag and a description are required');
       return;
     }
 
@@ -105,7 +105,6 @@ export default function CreatePost() {
     setSelectedTags([]);
     setImage(null);
     setImagePreview(null);
-    toast.success('Post discarded');
   };
 
   return (

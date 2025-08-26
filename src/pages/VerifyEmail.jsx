@@ -37,17 +37,11 @@ const VerifyEmail = () => {
     if (e) e.preventDefault();
     const verificationCode = code.join('');
 
-    if (verificationCode.length !== 6) {
-      toast.error('Please enter a 6-digit code.');
-      return;
-    }
-
     try {
       await verifyEmail(verificationCode);
       toast.success('Email verified successfully');
     } catch (error) {
       console.error('Verification failed', error);
-      toast.error(error.response?.data?.message || 'Verification failed. Please try again.');
     }
   };
   useEffect(() => {

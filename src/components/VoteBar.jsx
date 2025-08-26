@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Bolt, BoltSlash, BoltSolid, BoltSlashSolid } from '../ui/Icons';
 import { usePostService } from '../context/PostContext';
 import { useAuth } from '../context/AuthContext';
-import toast from 'react-hot-toast';
+import { showSuccess } from '../utils/toast';
 
 export default function VoteBar({
   postId,
@@ -34,7 +34,7 @@ export default function VoteBar({
 
   const cast = async (type) => {
     if (!user) {
-      toast.error('Log in to vote', { position: 'bottom-right' });
+      showSuccess('Log in to vote');
       return;
     }
     if (busy) return;
@@ -65,7 +65,7 @@ export default function VoteBar({
     } catch (e) {
       setState(prevState);
       setCount(prevCount);
-      toast.error(e.message || 'Vote failed');
+      (e.message || 'Vote failed');
     } finally {
       setBusy(false);
     }

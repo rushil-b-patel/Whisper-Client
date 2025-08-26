@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { usePostService } from '../context/PostContext';
-import toast from 'react-hot-toast';
 import PostCard from '../ui/PostCard';
+import { showError } from '../utils/toast';
 
 function Tag() {
   const { name } = useParams();
@@ -19,7 +19,7 @@ function Tag() {
         setPosts(res.posts);
         setTag(res.tag);
       } catch (err) {
-        toast.error('Failed to fetch posts for this tag');
+        showError('Failed to fetch posts for this tag');
       } finally {
         setIsLoading(false);
       }

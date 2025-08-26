@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePostService } from '../context/PostContext';
 import { useAuth } from '../context/AuthContext';
-import toast from 'react-hot-toast';
 import VoteBar from '../components/VoteBar';
 import CommentThread from '../components/Comment';
 import { EditorRenderer } from '../components/Editor';
 import { Bars, Trash, Save, ChevronLeft, Share, UnSave } from '../ui/Icons';
+import { showError, showSuccess } from '../utils/toast';
 
 function PostDetail() {
   const { id } = useParams();
@@ -30,7 +30,6 @@ function PostDetail() {
         setComments(response.comments || []);
         setIsSaved(user?.savedPosts?.includes(response.post._id));
       } catch (err) {
-        toast.error('Error fetching post');
         console.error(err);
       } finally {
         setIsLoading(false);
@@ -52,31 +51,30 @@ function PostDetail() {
   const handleSavePost = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
-      toast.error('Login to save post');
+      showError('Login to save post');
       return;
     }
 
     try {
       const res = await savePost(token, id);
       setIsSaved(res.isSaved);
-      toast.success(res.message);
     } catch {
-      toast.error('Failed to save/unsave post');
+      showError('Failed to save/unsave post');
     }
   };
 
   const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      toast.success('Link copied to clipboard!');
+      showSuccess('Link copied to clipboard!');
     } catch {
-      toast.error('Failed to copy link');
+      showError('Failed to copy link');
     }
   };
 
   const handleDeletePost = async () => {
     if (user?._id !== post?.user?._id) {
-      toast.error('Unauthorized');
+      showError('Unauthorized');
       return;
     }
     try {
@@ -84,7 +82,7 @@ function PostDetail() {
       await deletePost(localStorage.getItem('token'), id);
       navigate('/');
     } catch {
-      toast.error('Failed to delete post');
+      showError('Failed to delete post');
     } finally {
       setIsLoading(false);
       setShowOptions(false);

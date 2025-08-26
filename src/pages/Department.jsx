@@ -14,6 +14,7 @@ export default function Department() {
     const fetchDepartments = async () => {
       try {
         const res = await getDepartments();
+        console.log(res.departments)
         setDepartments(res.departments);
       } catch (err) {
         console.error('Failed to fetch departments', err);
@@ -24,9 +25,15 @@ export default function Department() {
   }, []);
 
   const fetchPosts = async (deptName) => {
+    if (selectedDept === deptName) {
+      setSelectedDept(null);
+      setDeptPosts([]);
+      return;
+    }
     try {
       setLoading(true);
       const res = await getPostsByDepartment(deptName);
+      console.log(res);
       setDeptPosts(res.posts);
       setSelectedDept(deptName);
     } catch (err) {

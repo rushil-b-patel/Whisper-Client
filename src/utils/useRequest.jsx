@@ -8,7 +8,6 @@ export const useRequest = () => {
   const handleError = (error, fallbackMessage) => {
     const message = error?.response?.data?.message || fallbackMessage || 'Something went wrong';
     console.error('Request Error:', message);
-    toast.error(message, { position: 'bottom-right' });
     setError(message);
     return message;
   };

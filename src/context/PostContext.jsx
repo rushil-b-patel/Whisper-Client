@@ -15,7 +15,6 @@ export const usePostService = () => {
       const res = await axios.post(`${API}/post/create-post`, formData, {
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
       });
-      showSuccess('Post created');
       return res.data;
     }, 'Failed to create post');
   };
@@ -42,7 +41,6 @@ export const usePostService = () => {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then((res) => {
-            showSuccess('Post deleted');
             return res.data;
           }),
       'Failed to delete post'
@@ -91,7 +89,6 @@ export const usePostService = () => {
             }
           )
           .then((res) => {
-            showSuccess('Comment added');
             return res.data;
           }),
       'Failed to add comment'

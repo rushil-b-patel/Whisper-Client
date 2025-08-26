@@ -52,7 +52,6 @@ export const AuthProvider = ({ children }) => {
       setUser(user);
       localStorage.setItem('token', token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      showSuccess('Logged in successfully');
       return res.data;
     }, 'Login failed');
   };
@@ -64,7 +63,6 @@ export const AuthProvider = ({ children }) => {
       setUser(user);
       localStorage.setItem('token', token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      showSuccess('Account created');
       navigate(user.isVerified ? '/' : '/verify-email');
     }, 'Signup failed');
   };
@@ -78,7 +76,6 @@ export const AuthProvider = ({ children }) => {
       setUser(user);
       localStorage.setItem('token', token);
       axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-      showSuccess('Logged in with Google');
       navigate(user.isVerified ? '/' : '/verify-email');
     }, 'Google login failed');
   };
@@ -87,7 +84,6 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem('token');
     delete axios.defaults.headers.common['Authorization'];
-    showSuccess('Logged out');
     navigate('/login');
   };
 
@@ -95,7 +91,6 @@ export const AuthProvider = ({ children }) => {
     return await execute(async () => {
       const res = await axios.post(`${API}/auth/verify-email`, { code });
       setUser(res.data.user);
-      showSuccess('Email verified');
       navigate('/');
     }, 'Email verification failed');
   };
