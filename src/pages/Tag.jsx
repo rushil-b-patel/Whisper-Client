@@ -41,7 +41,7 @@ function Tag() {
           ))}
         </div>
       ) : (
-        <p className="text-gray-500">No posts for this tag yet.</p>
+        <p>No posts for this tag yet.</p>
       )}
     </div>
   );

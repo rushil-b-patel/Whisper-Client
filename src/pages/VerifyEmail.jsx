@@ -51,8 +51,8 @@ const VerifyEmail = () => {
   }, [code]);
 
   return (
-    <div className="rounded-2xl overflow-hidden bg-gray-100 flex flex-col h-[calc(100vh-4em)] justify-center items-center p-12 sm:px-6 lg:px-8">
-      <div className="bg-white dark:bg-black text-black dark:text-white bg-opacity-85 rounded-xl p-8 w-full max-w-md">
+    <div className="rounded-2xl overflow-hidden flex flex-col h-[calc(100vh-4em)] justify-center items-center p-12 sm:px-6 lg:px-8">
+      <div className="border dark:border-black bg-opacity-85 rounded-xl p-8 w-full max-w-md">
         <h2 className="text-3xl font-bold text-center">Verify Your Email</h2>
         <p className="text-center mb-6 mt-1">
           Enter the 6-digit code sent to your{' '}
@@ -85,7 +85,7 @@ const VerifyEmail = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-black dark:bg-gray-300 text-white dark:text-black font-bold py-3 px-4 rounded-lg shadow-lg"
+            className="w-full bg-black dark:bg-white text-white dark:text-black font-bold py-3 px-4 rounded-lg shadow-lg"
           >
             {isLoading ? 'Verifying...' : 'Verify Email'}
           </button>

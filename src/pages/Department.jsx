@@ -14,7 +14,7 @@ export default function Department() {
     const fetchDepartments = async () => {
       try {
         const res = await getDepartments();
-        console.log(res.departments)
+        console.log(res.departments);
         setDepartments(res.departments);
       } catch (err) {
         console.error('Failed to fetch departments', err);
@@ -44,9 +44,9 @@ export default function Department() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0e1113] py-8 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold font-mono text-center mb-10 text-gray-900 dark:text-white">
+        <h1 className="text-3xl font-bold text-center mb-10">
           Explore Departments
         </h1>
 
@@ -55,28 +55,28 @@ export default function Department() {
             <button
               key={dept.name}
               onClick={() => fetchPosts(dept.name)}
-              className={`rounded-2xl border dark:border-[#2A2B30] px-4 py-6 shadow-sm hover:shadow-md transition-colors duration-200 font-mono text-sm text-center ${
+              className={`rounded-2xl border dark:border-[#2A2B30] px-4 py-6 shadow-sm hover:shadow-md transition-colors duration-200 text-sm text-center ${
                 selectedDept === dept.name
                   ? 'bg-black text-white dark:bg-white dark:text-black'
-                  : 'bg-white dark:bg-[#1a1c1f] text-gray-900 dark:text-white'
+                  : 'bg-white dark:bg-[#1a1c1f]'
               }`}
             >
               <h3 className="text-lg font-bold">{dept.name}</h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">{dept.postCount} posts</p>
+              <p>{dept.postCount} posts</p>
             </button>
           ))}
         </div>
 
         {selectedDept && (
-          <div className="bg-white dark:bg-[#1a1c1f] p-6 rounded-2xl border border-gray-200 dark:border-[#2A2B30] shadow-lg">
-            <h2 className="text-xl font-bold mb-4 font-mono text-gray-800 dark:text-white">
+          <div className="p-6 rounded-2xl border border-gray-200 dark:border-[#2A2B30] shadow-lg">
+            <h2 className="text-xl font-bold mb-4">
               Posts from <span className="underline">{selectedDept}</span>
             </h2>
 
             {loading ? (
-              <div className="text-center text-gray-500 font-mono">Loading posts...</div>
+              <div className="text-center">Loading posts...</div>
             ) : deptPosts.length === 0 ? (
-              <p className="text-gray-500 dark:text-gray-400 text-sm font-mono">No posts found.</p>
+              <p>No posts found.</p>
             ) : (
               <div className="space-y-4">
                 {deptPosts.map((post) => (

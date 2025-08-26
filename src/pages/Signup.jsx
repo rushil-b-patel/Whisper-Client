@@ -29,14 +29,14 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-4em)] px-4 py-12 bg-white dark:bg-[#0e1113]">
+    <div className="flex items-center justify-center min-h-[calc(100vh-4em)] px-4 py-12">
       <div className="w-full max-w-md border border-gray-200 dark:border-[#2A2B30] rounded-lg p-8 dark:bg-[#131619]">
-        <h2 className="text-2xl font-bold text-center mb-6 text-black dark:text-white font-mono">
+        <h2 className="text-2xl font-bold text-center mb-6">
           Create Account
         </h2>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium mb-1 dark:text-gray-300">Username</label>
+            <label className="block text-sm font-medium mb-1">Username</label>
             <input
               type="text"
               placeholder="Username"
@@ -47,7 +47,7 @@ const Signup = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1 dark:text-gray-300">Email</label>
+            <label className="block text-sm font-medium mb-1">Email</label>
             <input
               type="email"
               placeholder="you@example.com"
@@ -58,7 +58,7 @@ const Signup = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1 dark:text-gray-300">Password</label>
+            <label className="block text-sm font-medium mb-1">Password</label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -87,7 +87,7 @@ const Signup = () => {
           </button>
         </form>
 
-        <div className="text-sm text-center mt-5 dark:text-gray-300">
+        <div className="text-sm text-center mt-5">
           Already have an account?{' '}
           <Link to="/login" className="text-blue-500 hover:underline">
             Log in
@@ -99,13 +99,13 @@ const Signup = () => {
             <div className="w-full border-t border-gray-300 dark:border-gray-700" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="bg-white dark:bg-[#131619] px-2 text-gray-500 dark:text-gray-300">
+            <span>
               Or continue with
             </span>
           </div>
         </div>
 
-        <div className="flex justify-center">
+        <div className="flex justify-center"> 
           <GoogleLogin
             onSuccess={handleGoogleSignup}
             onError={() => setError('Google signup failed.')}

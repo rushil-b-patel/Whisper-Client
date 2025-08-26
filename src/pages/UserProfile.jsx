@@ -40,17 +40,17 @@ export default function UserProfile() {
 
   if (loadingUser) {
     return (
-      <div className="h-[40vh] flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="w-10 h-10 border-4 border-gray-400 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen py-10 px-4 bg-white dark:bg-[#0e1113] text-black dark:text-white">
+    <div className="min-h-screen py-10 px-4">
       <div className="max-w-4xl mx-auto px-4 py-6">
         <div className="text-center mb-6">
-          <h1 className="text-3xl font-semibold text-gray-900 dark:text-white">{user.userName}</h1>
+          <h1 className="text-3xl font-semibold">{user.userName}</h1>
         </div>
 
         <Tabs tabs={TABS} active={activeTab} onChange={setActiveTab} />

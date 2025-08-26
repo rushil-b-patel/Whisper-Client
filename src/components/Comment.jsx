@@ -31,9 +31,9 @@ function CommentItem({ comment, postId, onAddReply, onDeleteComment }) {
   const downVoted = comment.downVotedUsers?.includes(user?._id);
 
   return (
-    <div className="bg-white dark:bg-[#1e1f23] border dark:border-[#2A2B30] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div className="border dark:border-[#2A2B30] rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow duration-300">
       <div className="flex justify-between items-center mb-2">
-        <div className="font-mono font-semibold text-gray-900 dark:text-white">
+        <div className="font-semibold">
           {comment.user?.userName || 'User'}
         </div>
         <time className="text-xs text-gray-400 dark:text-gray-500">
@@ -76,7 +76,7 @@ function CommentItem({ comment, postId, onAddReply, onDeleteComment }) {
             value={replyText}
             onChange={(e) => setReplyText(e.target.value)}
             rows={2}
-            className="w-full p-2 rounded border dark:bg-gray-800 dark:text-white"
+            className="w-full p-2 rounded border dark:bg-gray-800"
             placeholder="Write your reply…"
           />
           <div className="flex justify-end space-x-2">
@@ -90,7 +90,7 @@ function CommentItem({ comment, postId, onAddReply, onDeleteComment }) {
             <button
               type="submit"
               disabled={!replyText.trim()}
-              className="px-3 py-1 bg-indigo-600 text-white text-sm rounded disabled:opacity-50"
+              className="px-3 py-1 bg-indigo-600 text-sm rounded disabled:opacity-50"
             >
               Reply
             </button>
@@ -143,14 +143,14 @@ export default function CommentThread({ post, comments: initialComments }) {
           value={newComment}
           onChange={(e) => setNewComment(e.target.value)}
           rows={3}
-          className="w-full p-3 rounded border dark:bg-gray-800 dark:text-white"
+          className="w-full p-3 rounded border dark:border-gray-700 dark:bg-[#0e1113] focus:outline-none"
           placeholder="Leave a comment…"
         />
         <div className="flex justify-end">
           <button
             type="submit"
             disabled={!newComment.trim()}
-            className="bg-indigo-600 text-white px-4 py-1 rounded disabled:opacity-50"
+            className="bg-black text-white dark:bg-white dark:text-black px-4 py-1 rounded disabled:opacity-50"
           >
             Comment
           </button>
@@ -158,7 +158,7 @@ export default function CommentThread({ post, comments: initialComments }) {
       </form>
 
       {comments.length === 0 ? (
-        <p className="text-gray-500 dark:text-gray-400 text-sm font-mono">No comments yet…</p>
+        <p className="text-gray-500 dark:text-gray-400 text-sm">No comments yet…</p>
       ) : (
         comments.map((c) => (
           <CommentItem
@@ -172,7 +172,7 @@ export default function CommentThread({ post, comments: initialComments }) {
       )}
     </div>
   ) : (
-    <p className="text-gray-500 dark:text-gray-400 text-sm font-mono mt-8">
+    <p className="text-gray-500 dark:text-gray-400 text-sm mt-8">
       Comments are disabled for this post.
     </p>
   );

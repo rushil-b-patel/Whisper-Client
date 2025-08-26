@@ -95,24 +95,24 @@ function PostDetail() {
   const isOwner = user?._id === post.user?._id;
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-[#0e1113] py-8 px-4">
+    <div className="min-h-screen py-8 px-4">
       <button
         onClick={() => navigate('/')}
-        className="text-indigo-600 dark:text-indigo-400 flex items-center mb-6"
+        className="flex items-center mb-6"
       >
         <ChevronLeft className="w-5 h-5 mr-1" />
-        <span className="font-mono">Back</span>
+        <span>Back</span>
       </button>
 
-      <div className="max-w-4xl mx-auto bg-white dark:bg-[#1a1c1f] p-8 rounded-xl shadow">
+      <div className="max-w-4xl mx-auto border dark:border-black p-8 rounded-xl shadow">
         <header className="flex items-center mb-4">
           <img
             src={post?.avatar || `https://ui-avatars.com/api/?name=${post.user.userName}`}
-            className="w-12 h-12 rounded-full ring-2 ring-indigo-300 dark:ring-indigo-700"
+            className="w-12 h-12 rounded-full ring-2 ring-indigo-300 dark:ring-gray-700"
             alt="avatar"
           />
           <div className="ml-4">
-            <h2 className="text-lg font-semibold text-gray-800 dark:text-white">
+            <h2 className="text-lg font-semibold">
               {post.user.userName}
             </h2>
             <p className="text-sm text-gray-500 dark:text-gray-400">
@@ -123,12 +123,12 @@ function PostDetail() {
             <div className="ml-auto relative" ref={dropdownRef}>
               <button
                 onClick={() => setShowOptions((prev) => !prev)}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full"
+                className="p-2 hover:bg-gray-100 dark:hover:bg-[#1f2428] rounded-full"
               >
-                <Bars className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+                <Bars className="w-5 h-5" />
               </button>
               {showOptions && (
-                <div className="absolute right-0 mt-2 w-40 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 overflow-hidden z-50">
+                <div className="absolute right-0 mt-2 w-40 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-black overflow-hidden z-50">
                   <button
                     onClick={handleDeletePost}
                     className="flex items-center gap-2 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 dark:hover:bg-red-600/20 transition-colors w-full"
@@ -142,9 +142,7 @@ function PostDetail() {
           )}
         </header>
 
-        <h1 className="text-3xl font-bold text-indigo-600 dark:text-indigo-400 mb-4">
-          {post.title}
-        </h1>
+        <h1 className="text-3xl font-bold mb-4">{post.title}</h1>
 
         {post.image && (
           <div className="mb-6 rounded-xl overflow-hidden">
@@ -157,7 +155,7 @@ function PostDetail() {
             <button
               key={tag._id}
               onClick={() => navigate(`/tags/${encodeURIComponent(tag.name)}`)}
-              className="px-3 py-1 text-xs rounded-full bg-indigo-100 text-indigo-700 dark:bg-indigo-900 dark:text-indigo-300 hover:bg-indigo-200"
+              className="px-3 py-1 text-xs rounded-full bg-indigo-100 text-black dark:bg-gray-600 dark:text-white hover:bg-indigo-200"
             >
               #{tag.name}
             </button>
@@ -178,14 +176,14 @@ function PostDetail() {
           <div className="flex gap-4">
             <button
               onClick={handleSavePost}
-              className="flex items-center gap-1 text-sm text-gray-600 dark:text-white hover:text-indigo-600"
+              className="flex items-center gap-1 text-sm text-gray-600 dark:text-white hover:text-gray-700"
             >
               {isSaved ? <UnSave className="w-5 h-5" /> : <Save className="w-5 h-5" />}
               {isSaved ? 'Unsave' : 'Save'}
             </button>
             <button
               onClick={handleShare}
-              className="flex items-center gap-1 text-sm text-gray-600 dark:text-white hover:text-indigo-600"
+              className="flex items-center gap-1 text-sm text-gray-600 dark:text-white hover:text-gray-700"
             >
               <Share className="w-5 h-5" /> Share
             </button>

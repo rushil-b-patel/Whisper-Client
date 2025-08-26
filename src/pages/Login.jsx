@@ -38,14 +38,12 @@ const Login = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-[calc(100vh-4em)] px-4 py-12 bg-white dark:bg-[#0e1113]">
+    <div className="flex items-center justify-center min-h-[calc(100vh-4em)] px-4 py-12">
       <div className="w-full max-w-md border border-gray-200 dark:border-[#2A2B30] rounded-lg p-8 dark:bg-[#131619]">
-        <h2 className="text-2xl font-bold text-center mb-6 text-black dark:text-white font-mono">
-          Log In
-        </h2>
+        <h2 className="text-2xl font-bold text-center mb-6 ">Log In</h2>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium mb-1 dark:text-gray-300">
+            <label className="block text-sm font-medium mb-1">
               Username or Email
             </label>
             <input
@@ -58,7 +56,7 @@ const Login = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium mb-1 dark:text-gray-300">Password</label>
+            <label className="block text-sm font-medium mb-1">Password</label>
             <div className="relative">
               <input
                 type={showPassword ? 'text' : 'password'}
@@ -89,7 +87,7 @@ const Login = () => {
           </button>
         </form>
 
-        <div className="text-sm text-center mt-5 dark:text-gray-300">
+        <div className="text-sm text-center mt-5">
           Don’t have an account?{' '}
           <Link to="/signup" className="text-blue-500 hover:underline">
             Sign up
@@ -101,7 +99,7 @@ const Login = () => {
             <div className="w-full border-t border-gray-300 dark:border-gray-700" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="bg-white dark:bg-[#131619] px-2 text-gray-500 dark:text-gray-300">
+            <span className="bg-white dark:bg-[#131619] px-2 text-gray-500">
               Or continue with
             </span>
           </div>

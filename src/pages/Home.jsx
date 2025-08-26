@@ -174,16 +174,16 @@ function Home() {
   }, [fetchPosts, _fetchDepartments, fetchUserStats, user]);
 
   return (
-    <div className="h-screen overflow-hidden bg-gray-50 dark:bg-[#0e1113]">
+    <div className="h-screen overflow-hidden">
       {showMobileFilter && (
-        <div className="fixed top-16 left-0 w-full z-40 bg-white dark:bg-[#131619] border-b border-gray-200 dark:border-[#2A2B30] md:hidden shadow-sm">
+        <div className="fixed top-16 left-0 w-full z-40 border-b border-gray-200 dark:border-[#2A2B30] md:hidden shadow-sm">
           {filters.map(({ id, label }) => (
             <button
               key={id}
-              className={`w-full flex items-center px-4 py-3 text-left font-mono transition-colors ${
+              className={`w-full flex items-center px-4 py-3 text-left transition-colors ${
                 activeFilter === id
                   ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800 font-medium'
-                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-slate-800'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#1f2428]'
               }`}
               onClick={() => handleFilterChange(id)}
             >

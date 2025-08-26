@@ -82,7 +82,7 @@ export const EditorRenderer = ({ data }) => {
       case 'header': {
         const Tag = `h${data?.level || 2}`;
         return (
-          <Tag key={id} className="text-indigo-600 dark:text-indigo-400 font-bold mb-3">
+          <Tag key={id} className="text-2xl font-semibold mb-3">
             {data?.text || ''}
           </Tag>
         );
@@ -90,7 +90,7 @@ export const EditorRenderer = ({ data }) => {
 
       case 'paragraph':
         return (
-          <p key={id} className="text-gray-800 dark:text-gray-200 font-mono mb-3 leading-relaxed">
+          <p key={id} className="mb-3 leading-relaxed">
             {typeof data?.text === 'string' ? data.text : '[Invalid paragraph]'}
           </p>
         );
@@ -101,7 +101,7 @@ export const EditorRenderer = ({ data }) => {
             {(Array.isArray(data?.items) ? data.items : []).map((item, idx) => (
               <li
                 key={idx}
-                className={`pl-6 relative before:absolute before:left-0 before:top-1 before:w-5 before:h-5 before:rounded before:border before:flex before:items-center before:justify-center font-mono ${
+                className={`pl-6 relative before:absolute before:left-0 before:top-1 before:w-5 before:h-5 before:rounded before:border before:flex before:items-center before:justify-center ${
                   item.checked
                     ? 'before:border-indigo-600 before:bg-indigo-500 before:content-["✓"] before:text-white before:text-xs'
                     : 'before:border-gray-400 dark:before:border-gray-500 before:bg-white dark:before:bg-gray-800'

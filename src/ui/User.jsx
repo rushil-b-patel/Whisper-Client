@@ -59,7 +59,7 @@ const User = () => {
           alt="avatar"
           className="w-8 h-8 rounded-full"
         />
-        <span className="hidden lg:block font-mono font-bold dark:text-white">{user.userName}</span>
+        <span className="hidden lg:block font-bold dark:text-white">{user.userName}</span>
       </button>
 
       <div

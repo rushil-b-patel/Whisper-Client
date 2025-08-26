@@ -25,10 +25,8 @@ export default function LeftLayout({
 
   return (
     <aside className="hidden md:block md:w-64 lg:w-72 h-full overflow-y-auto px-2 py-4">
-      <section className="bg-white dark:bg-[#131619] rounded-xl shadow-sm border border-gray-200 dark:border-[#2A2B30] p-4 mb-4">
-        <h2 className="font-mono text-lg font-semibold text-gray-900 dark:text-white mb-3">
-          Discover
-        </h2>
+      <section className="rounded-xl shadow-sm border border-gray-200 dark:border-[#2A2B30] p-4 mb-4">
+        <h2 className="text-lg font-semibold mb-3">Discover</h2>
         <ul className="space-y-2">
           {filters.map(({ id, label, icon }) => (
             <li key={id}>
@@ -37,22 +35,20 @@ export default function LeftLayout({
                 className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg transition-all duration-200 ${
                   activeFilter === id
                     ? 'bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white font-medium'
-                    : 'text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white'
+                    : 'text-gray-600 hover:bg-gray-50 dark:text-gray-300 dark:hover:bg-[#1f2428] hover:text-gray-900 dark:hover:text-white'
                 }`}
               >
                 {icon}
-                <span className="font-mono font-medium">{label}</span>
+                <span className="font-medium">{label}</span>
               </button>
             </li>
           ))}
         </ul>
       </section>
 
-      <section className="bg-white dark:bg-[#131619] rounded-xl shadow-sm border border-gray-200 dark:border-[#2A2B30] p-4">
+      <section className="rounded-xl shadow-sm border border-gray-200 dark:border-[#2A2B30] p-4">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="font-mono text-lg font-semibold text-gray-900 dark:text-white">
-            Departments
-          </h2>
+          <h2 className="text-lg font-semibold">Departments</h2>
           {!departmentsLoading && departments.length > 5 && (
             <button className="text-gray-600 dark:text-gray-400 text-sm hover:text-gray-900 dark:hover:text-white hover:underline transition-colors">
               See All
@@ -66,9 +62,7 @@ export default function LeftLayout({
           </div>
         ) : departmentsError ? (
           <div className="text-center py-6">
-            <p className="text-sm text-gray-500 dark:text-gray-400 font-mono mb-2">
-              {departmentsError}
-            </p>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-2">{departmentsError}</p>
             <button
               onClick={fetchDepartments}
               className="text-xs text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:underline transition-colors"
@@ -86,7 +80,7 @@ export default function LeftLayout({
                     className={`flex items-center space-x-3 p-2 rounded-lg transition cursor-pointer ${
                       isActive
                         ? 'bg-gray-100 dark:bg-gray-800'
-                        : 'hover:bg-gray-50 dark:hover:bg-slate-800'
+                        : 'hover:bg-gray-50 dark:hover:bg-[#1f2428]'
                     }`}
                     onClick={() => setActiveDepartment(dept.name)}
                   >
@@ -95,7 +89,7 @@ export default function LeftLayout({
                     </div>
                     <div>
                       <p
-                        className={`text-sm font-mono ${
+                        className={`text-sm ${
                           isActive
                             ? 'font-semibold text-gray-900 dark:text-white'
                             : 'font-medium text-gray-900 dark:text-white'

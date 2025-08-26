@@ -20,7 +20,7 @@ export default function PostCard({ post }) {
 
   return (
     <div
-      className="bg-white dark:bg-[#0e1113] p-5 sm:p-6 rounded-2xl shadow hover:shadow-xl transition cursor-pointer border border-gray-200 dark:border-slate-800"
+      className="p-5 sm:p-6 rounded-2xl shadow hover:shadow-xl transition cursor-pointer border border-gray-200 dark:border-slate-800"
       onClick={go}
     >
       <div className="flex items-center gap-3 mb-4">
@@ -29,19 +29,19 @@ export default function PostCard({ post }) {
           alt="User Avatar"
           className="w-8 h-8 rounded-full object-cover border-2 border-gray-200 dark:border-slate-600"
         />
-        <div className="flex flex-col font-mono">
-          <span className="text-sm font-semibold text-black dark:text-white truncate">
+        <div className="flex flex-col">
+          <span className="font-semibold truncate">
             {post.user?.userName || 'Deleted User'}
           </span>
-          <span className="text-xs text-gray-500 dark:text-gray-400 truncate">
-            {post.user?.department || 'General'} • {new Date(post.createdAt).toLocaleDateString()}
-          </span>
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            {post.user.department || 'General'} • {new Date(post.createdAt).toLocaleDateString()}
+          </p>
         </div>
       </div>
 
-      <h3 className="font-mono text-xl font-bold mb-2 text-black dark:text-white">{post.title}</h3>
+      <h2 className="text-2xl font-semibold hover:underline">{post.title}</h2>
 
-      <div className="text-gray-700 dark:text-gray-300 mb-4 text-sm leading-relaxed">
+      <div className="mb-4 text-sm leading-relaxed">
         <EditorRenderer data={post.description} />
       </div>
 
@@ -60,9 +60,9 @@ export default function PostCard({ post }) {
           initialUpVoted={upVoted}
           initialDownVoted={downVoted}
         />
-        <div className="flex items-center gap-1 text-gray-600 dark:text-gray-400">
+        <div className="flex items-center gap-1">
           <Comment className="w-5 h-5" />
-          <span className="font-mono">{post.commentCount || 0}</span>
+          <span className="font-serif">{post.commentCount || 0}</span>
         </div>
       </div>
     </div>

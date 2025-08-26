@@ -75,7 +75,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="flex items-center justify-between h-16 px-4 md:px-10 dark:bg-[#0e1113] bg-white border-b dark:border-[#2A3236] border-gray-200 relative">
+    <nav className="flex items-center justify-between h-16 px-4 md:px-10 border-b dark:border-[#2A3236] border-gray-200 relative">
       <div className="flex items-center space-x-4">
         <WhisperLogo />
 
@@ -86,7 +86,7 @@ function Navbar() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full px-3 py-2 text-sm rounded-lg bg-gray-100 dark:bg-[#2A3236] dark:text-white"
+            className="w-full px-3 py-2 text-sm rounded-lg bg-gray-100 dark:bg-[#2A3236]"
           />
           {showDropdown && results.length > 0 && (
             <div
@@ -99,10 +99,10 @@ function Navbar() {
                   <li key={post._id}>
                     <Link
                       to={`/post/${post._id}`}
-                      className="block px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="block px-3 py-2 hover:bg-gray-100 dark:hover:bg-[#1f2428]"
                       onClick={() => setShowDropdown(false)}
                     >
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">
+                      <div className="text-sm font-medium">
                         {post.title}
                       </div>
                       <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
@@ -122,7 +122,7 @@ function Navbar() {
           {!showSearch && (
             <button
               onClick={() => setShowSearch(true)}
-              className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-[#2A3236] transition"
+              className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-[#1f2428] transition"
               aria-label="Search"
             >
               <Search />
@@ -137,7 +137,7 @@ function Navbar() {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
-                className="right-0 w-48 px-3 py-2 text-sm rounded-lg bg-gray-100 dark:bg-[#2A3236] dark:text-white border border-gray-300 dark:border-slate-700 transition"
+                className="right-0 w-48 px-3 py-2 text-sm rounded-lg bg-gray-100 dark:bg-[#2A3236] border border-gray-300 dark:border-slate-700 transition"
               />
               {showDropdown && results.length > 0 && (
                 <div className="absolute left-0 right-0 mt-1 bg-white dark:bg-[#2A3236] rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 max-h-72 overflow-y-auto z-50 search-dropdown">
@@ -146,13 +146,13 @@ function Navbar() {
                       <li key={post._id}>
                         <Link
                           to={`/post/${post._id}`}
-                          className="block px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
+                          className="block px-3 py-2 hover:bg-gray-100 dark:hover:bg-[#1f2428]"
                           onClick={() => {
                             setShowDropdown(false);
                             setShowSearch(false);
                           }}
                         >
-                          <div className="text-sm font-medium text-gray-900 dark:text-white">
+                          <div className="text-sm font-medium">
                             {post.title}
                           </div>
                           <div className="text-xs text-gray-500 dark:text-gray-400 truncate">
@@ -171,13 +171,13 @@ function Navbar() {
         <div className="hidden md:flex space-x-2">
           <Link
             to="/create-post"
-            className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:text-[#eef1f3] dark:hover:bg-[#2A3236] transition"
+            className="px-3 py-2 rounded-md text-sm font-semibold hover:bg-gray-100 dark:hover:bg-[#1f2428] transition"
           >
             Create
           </Link>
           <Link
             to="/departments"
-            className="px-3 py-2 rounded-md text-sm font-medium hover:bg-gray-100 dark:text-[#eef1f3] dark:hover:bg-[#2A3236] transition"
+            className="px-3 py-2 rounded-md text-sm font-semibold hover:bg-gray-100 dark:hover:bg-[#1f2428] transition"
           >
             Departments
           </Link>

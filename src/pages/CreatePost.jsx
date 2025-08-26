@@ -108,15 +108,15 @@ export default function CreatePost() {
   };
 
   return (
-    <div className="min-h-screen py-10 px-4 bg-white dark:bg-[#0e1113] text-black dark:text-white">
+    <div className="min-h-screen py-10 px-4">
       <div className="max-w-3xl mx-auto border border-gray-200 dark:border-[#2A2B30] rounded-md p-6 sm:p-10">
-        <h1 className="text-3xl sm:text-4xl font-bold mb-10 font-mono border-l-4 pl-4 border-black dark:border-white">
+        <h1 className="text-3xl sm:text-4xl font-bold mb-10 border-l-4 pl-4 border-black dark:border-white">
           Create a Post
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-8">
           <div>
-            <label className="block text-sm font-semibold mb-2 font-mono">Title</label>
+            <label className="block font-semibold mb-2">Title</label>
             <input
               ref={titleRef}
               type="text"
@@ -125,15 +125,13 @@ export default function CreatePost() {
               maxLength={300}
               required
               placeholder="Give your post a title"
-              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-[#1e1f23] font-mono"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-[#0e1113]"
             />
-            <p className="text-sm text-gray-400 text-right font-mono mt-1">
-              {title.length} / 300 characters
-            </p>
+            <p className="text-gray-400 text-right mt-1">{title.length} / 300 characters</p>
           </div>
 
           <div>
-            <label className="block text-sm font-semibold mb-2 font-mono">Tags</label>
+            <label className="block font-semibold mb-2">Tags</label>
             <Combobox
               value={null}
               onChange={(tag) => {
@@ -145,7 +143,7 @@ export default function CreatePost() {
             >
               <div className="relative">
                 <ComboboxInput
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-[#1e1f23] font-mono"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-700 rounded-md bg-white dark:bg-[#0e1113]"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   displayValue={() => ''}
@@ -153,7 +151,7 @@ export default function CreatePost() {
                 />
 
                 {(filteredTags.length > 0 || query) && (
-                  <ComboboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white dark:bg-gray-800 text-black dark:text-white shadow-lg border border-gray-300 dark:border-gray-700">
+                  <ComboboxOptions className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md shadow-lg border border-gray-300 dark:border-gray-700">
                     {filteredTags.map((tag) => (
                       <ComboboxOption
                         key={tag._id}
@@ -172,7 +170,7 @@ export default function CreatePost() {
                       !allTags.some((t) => t.name.toLowerCase() === query.toLowerCase()) && (
                         <ComboboxOption
                           value={query}
-                          className="cursor-pointer select-none px-4 py-2 text-indigo-500"
+                          className="cursor-pointer select-none px-4 py-2 font-semibold"
                         >
                           + Create “{query}”
                         </ComboboxOption>
@@ -204,14 +202,14 @@ export default function CreatePost() {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold mb-2 font-mono">Description</label>
-            <div className="border border-gray-300 dark:border-gray-700 rounded-md p-2 bg-white dark:bg-[#1e1f23]">
+            <label className="block font-semibold mb-2">Description</label>
+            <div className="border border-gray-300 dark:border-gray-700 rounded-md p-2">
               <Editor ref={editorRef} />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-semibold mb-2 font-mono">Image</label>
+            <label className="block font-semibold mb-2">Image</label>
             <div className="border border-gray-300 dark:border-gray-700 rounded-lg p-4 flex items-center justify-center">
               {imagePreview ? (
                 <div className="relative">
@@ -228,7 +226,7 @@ export default function CreatePost() {
                   </button>
                 </div>
               ) : (
-                <label className="cursor-pointer text-sm font-mono text-gray-600 dark:text-gray-300">
+                <label className="cursor-pointer text-sm text-gray-600 dark:text-gray-300">
                   <input
                     type="file"
                     accept="image/*"
@@ -251,23 +249,23 @@ export default function CreatePost() {
               onChange={() => setAllowComments((prev) => !prev)}
               className="w-4 h-4 bg-black rounded dark:bg-gray-700"
             />
-            <label htmlFor="allowComments" className="text-sm font-mono">
+            <label htmlFor="allowComments" className="font-medium">
               Allow comments on this post
             </label>
           </div>
 
-          <div className="flex justify-end gap-4 pt-6">
+          <div className="flex justify-end gap-4 pt-6 font-semibold">
             <button
               type="button"
               onClick={discardPost}
-              className="px-6 py-2 bg-white text-black border border-black hover:bg-black hover:text-white transition-all font-mono rounded"
+              className="px-6 py-2 bg-white text-black border dark:bg-[#0e1113] dark:text-white dark:border-white dark:hover:bg-white dark:hover:text-black border-black hover:bg-black hover:text-white transition-all rounded"
             >
               Discard
             </button>
             <button
               type="submit"
               disabled={isLoading}
-              className="px-6 py-2 bg-black text-white border border-black hover:bg-white hover:text-black transition-all font-mono rounded disabled:opacity-60"
+              className="px-6 py-2 bg-black dark:bg-white dark:text-black dark:hover:text-white dark:hover:border-white dark:hover:bg-black text-white border border-black hover:bg-white hover:text-black transition-all rounded disabled:opacity-60"
             >
               {isLoading ? 'Publishing…' : 'Publish'}
             </button>

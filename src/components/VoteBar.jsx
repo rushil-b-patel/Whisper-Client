@@ -18,7 +18,7 @@ export default function VoteBar({
     down: initialDownVoted,
   });
   const [busy, setBusy] = useState(false);
-  const { upVotePost, downVotePost, voteComment, getPost } = usePostService();
+  const { upVotePost, downVotePost, voteComment } = usePostService();
   const { user } = useAuth();
   const token = localStorage.getItem('token');
 
@@ -65,22 +65,22 @@ export default function VoteBar({
     } catch (e) {
       setState(prevState);
       setCount(prevCount);
-      (e.message || 'Vote failed');
+      e.message || 'Vote failed';
     } finally {
       setBusy(false);
     }
   };
 
-  const base = 'px-4 py-2 space-x-4 rounded-full text-sm';
-  const bg = state.up
-    ? 'bg-[#3F72AF] text-blue-100'
-    : state.down
-      ? 'bg-[#B83B5E] text-black'
-      : 'bg-white text-gray-800 dark:bg-slate-800 dark:text-white';
-
   return (
     <div
-      className={`flex items-center justify-center ${base} border border-gray-200 dark:border-gray-700 shadow-sm transition ${bg}`}
+      className={`flex items-center justify-center px-4 py-2 space-x-4 rounded-full text-sm border border-gray-200 dark:border-gray-700 shadow-sm transition 
+    ${
+      state.up
+        ? 'bg-[#EA2F14] text-white'
+        : state.down
+          ? 'bg-[#9929EA] text-black'
+          : 'bg-white text-gray-800 dark:bg-[#1a1c1f] dark:text-gray-200'
+    }`}
       onClick={(e) => e.stopPropagation()}
     >
       <button

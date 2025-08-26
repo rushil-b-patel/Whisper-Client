@@ -9,3 +9,19 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+:root {
+  --color-bg: #ffffff;
+  --color-text: #1e293b;
+}
+
+.dark {
+  --color-bg: #0e1113;
+  --color-text: #f8fafc;
+}
+
+@layer base {
+  body {
+    @apply bg-bg text-text;
+  }
+}

@@ -45,43 +45,37 @@ function Settings() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4em)] px-4 sm:px-6 py-10 flex justify-center bg-white dark:bg-[#0e1113]">
+    <div className="min-h-[calc(100vh-4em)] px-4 sm:px-6 py-10 flex justify-center">
       <div className="w-full max-w-2xl border border-gray-200 dark:border-slate-800 rounded-lg px-6 py-8 sm:px-10 sm:py-12 transition-all duration-300 shadow-sm">
-        <div className="border-l-4 border-black pl-4 mb-10">
-          <h1 className="text-3xl sm:text-4xl font-bold font-mono text-black dark:text-white">
-            Edit Profile
-          </h1>
-        </div>
+        <h1 className="text-3xl sm:text-4xl font-bold mb-10 border-l-4 pl-4  border-black dark:border-white">
+          Edit Profile
+        </h1>
 
         <form onSubmit={handleSave} className="space-y-10">
           <div>
-            <label className="block font-semibold mb-2 font-mono text-black dark:text-white">
-              Username
-            </label>
+            <label className="block font-semibold mb-2">Username</label>
             <input
               type="text"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
               placeholder="Enter your username"
-              className="w-full bg-transparent border-b border-gray-300 dark:border-gray-700 text-black dark:text-white p-2 font-mono"
+              className="w-full bg-transparent border-b border-gray-300 dark:border-gray-700 text-black dark:text-white p-2"
             />
           </div>
 
           <div>
-            <label className="block font-semibold mb-2 font-mono text-black dark:text-white">
-              About You
-            </label>
+            <label className="block font-semibold mb-2">About You</label>
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
               placeholder="Tell others about yourself"
               rows={2}
-              className="w-full bg-transparent border-b border-gray-300 dark:border-gray-700 text-black dark:text-white p-2 font-mono resize-none"
+              className="w-full bg-transparent border-b border-gray-300 dark:border-gray-700 text-black dark:text-white p-2 resize-none"
             />
           </div>
 
           <div>
-            <label className="block font-semibold mb-2 font-mono text-black dark:text-white">
+            <label className="block font-semibold mb-2">
               Department
             </label>
             <Combobox value={department} onChange={setDepartment}>
@@ -91,7 +85,7 @@ function Settings() {
                     setQuery(e.target.value);
                     setDepartment(e.target.value);
                   }}
-                  className="w-full border-b border-gray-300 dark:border-gray-700 p-2 bg-transparent text-black dark:text-white font-mono"
+                  className="w-full border-b border-gray-300 dark:border-gray-700 p-2 bg-transparent text-black dark:text-white"
                   placeholder="Select or type your department"
                 />
                 {filtered.length > 0 && (
@@ -118,12 +112,12 @@ function Settings() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full py-3 font-semibold font-mono bg-black text-white hover:bg-white hover:text-black border border-black transition-all duration-300 rounded"
+            className="w-full py-3 font-semibold bg-black text-white hover:bg-white hover:text-black border border-black transition-all duration-300 rounded"
           >
             {isLoading ? 'Saving...' : 'Save Changes'}
           </button>
 
-          <p className="text-center text-sm text-gray-500 dark:text-gray-400 font-mono mt-2">
+          <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-2">
             Your email is encrypted and stored securely.
           </p>
         </form>
