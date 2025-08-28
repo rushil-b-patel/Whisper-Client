@@ -5,8 +5,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: "var(--color-bg)",
-        text: "var(--color-text)",
+        bg: 'var(--color-bg)',
+        text: 'var(--color-text)',
       },
     },
   },

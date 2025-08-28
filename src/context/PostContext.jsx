@@ -2,105 +2,105 @@ import axios from 'axios';
 import { useCallback } from 'react';
 import { useRequest } from '../utils/useRequest.jsx';
 import { showSuccess } from '../utils/toast.jsx';
+import { useAuth } from './AuthContext.jsx';
 
 const BASE_API = import.meta.env.VITE_BASE_API;
 const BASE_API_MOBILE = import.meta.env.VITE_BASE_API_MOBILE;
 const API = /iphone|ipad|ipod|Android/i.test(navigator.userAgent) ? BASE_API_MOBILE : BASE_API;
 
+const getAuthHeaders = (token) => ({
+  Authorization: `Bearer ${token}`,
+});
+
 export const usePostService = () => {
   const { execute, isLoading, error } = useRequest();
+  const { user } = useAuth();
 
-  const createPost = async (token, formData) => {
-    return await execute(async () => {
-      const res = await axios.post(`${API}/post/create-post`, formData, {
-        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' },
-      });
-      return res.data;
-    }, 'Failed to create post');
-  };
+  const token = user?.token || localStorage.getItem('token');
 
-  const getAllPosts = async () => {
-    return await execute(
-      () => axios.get(`${API}/post`).then((res) => res.data),
-      'Failed to load posts'
-    );
-  };
+  // ------------------- POSTS -------------------
 
-  const getPost = useCallback(async (id) => {
-    return await execute(
-      () => axios.get(`${API}/post/${id}`).then((res) => res.data),
-      'Failed to load post'
-    );
-  }, []);
-
-  const deletePost = async (token, id) => {
-    return await execute(
-      () =>
-        axios
-          .delete(`${API}/post/delete-post/${id}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          })
-          .then((res) => {
-            return res.data;
-          }),
-      'Failed to delete post'
-    );
-  };
-
-  const upVotePost = async (token, id) =>
+  const createPost = async (formData) =>
     execute(
       () =>
         axios
-          .put(
-            `${API}/post/upvote/${id}`,
-            {},
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          )
+          .post(`${API}/post/create-post`, formData, {
+            headers: { ...getAuthHeaders(token), 'Content-Type': 'multipart/form-data' },
+          })
+          .then((res) => res.data),
+      'Failed to create post'
+    );
+
+  const getAllPosts = async () =>
+    execute(() => axios.get(`${API}/post`).then((res) => res.data), 'Failed to load posts');
+
+  const getPost = useCallback(
+    async (id) =>
+      execute(() => axios.get(`${API}/post/${id}`).then((res) => res.data), 'Failed to load post'),
+    []
+  );
+
+  const deletePost = async (id) =>
+    execute(
+      () =>
+        axios
+          .delete(`${API}/post/delete-post/${id}`, { headers: getAuthHeaders(token) })
+          .then((res) => res.data),
+      'Failed to delete post'
+    );
+
+  const upVotePost = async (id) =>
+    execute(
+      () =>
+        axios
+          .put(`${API}/post/upvote/${id}`, {}, { headers: getAuthHeaders(token) })
           .then((res) => res.data),
       'Failed to upvote'
     );
 
-  const downVotePost = async (token, id) =>
+  const downVotePost = async (id) =>
     execute(
       () =>
         axios
-          .put(
-            `${API}/post/downvote/${id}`,
-            {},
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          )
+          .put(`${API}/post/downvote/${id}`, {}, { headers: getAuthHeaders(token) })
           .then((res) => res.data),
       'Failed to downvote'
     );
 
-  const addComment = async (token, id, text) =>
+  const savePost = async (postId) =>
     execute(
       () =>
         axios
-          .post(
-            `${API}/comment/${id}`,
-            { text },
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          )
-          .then((res) => {
-            return res.data;
-          }),
+          .put(`${API}/post/save/${postId}`, {}, { headers: getAuthHeaders(token) })
+          .then((res) => res.data),
+      'Failed to save post'
+    );
+
+  const getSavedPosts = async () =>
+    execute(
+      () =>
+        axios
+          .get(`${API}/post/saved-posts`, { headers: getAuthHeaders(token) })
+          .then((res) => res.data),
+      'Failed to fetch saved posts'
+    );
+
+  // ------------------- COMMENTS -------------------
+
+  const addComment = async (id, text) =>
+    execute(
+      () =>
+        axios
+          .post(`${API}/comment/${id}`, { text }, { headers: getAuthHeaders(token) })
+          .then((res) => res.data),
       'Failed to add comment'
     );
 
-  const deleteComment = async (token, postId, commentId) =>
+  const deleteComment = async (postId, commentId) =>
     execute(
       () =>
         axios
-          .delete(`${API}/comment/${postId}/${commentId}`, {
-            headers: { Authorization: `Bearer ${token}` },
-          })
+          .delete(`${API}/comment/${postId}/${commentId}`, { headers: getAuthHeaders(token) })
           .then((res) => {
             showSuccess('Comment deleted');
             return res.data;
@@ -108,60 +108,20 @@ export const usePostService = () => {
       'Failed to delete comment'
     );
 
-  const voteComment = async (token, postId, commentId, voteType) =>
+  const voteComment = async (postId, commentId, voteType) =>
     execute(
       () =>
         axios
           .put(
             `${API}/comment/${postId}`,
-            {
-              commentId,
-              voteType,
-            },
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
+            { commentId, voteType },
+            { headers: getAuthHeaders(token) }
           )
           .then((res) => res.data),
       'Failed to vote on comment'
     );
 
-  const savePost = async (token, postId) =>
-    execute(
-      () =>
-        axios
-          .put(
-            `${API}/post/save/${postId}`,
-            {},
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          )
-          .then((res) => res.data),
-      'Failed to save post'
-    );
-
-  const getSavedPosts = async (token) =>
-    execute(
-      () =>
-        axios
-          .get(`${API}/post/saved-posts`, {
-            headers: { Authorization: `Bearer ${token}` },
-          })
-          .then((res) => res.data),
-      'Failed to fetch saved posts'
-    );
-
-  const getUserStats = async (token) =>
-    execute(
-      () =>
-        axios
-          .get(`${API}/stats/user-stats`, {
-            headers: { Authorization: `Bearer ${token}` },
-          })
-          .then((res) => res.data),
-      'Failed to fetch stats'
-    );
+  // ------------------- DEPARTMENTS -------------------
 
   const getDepartments = async () =>
     execute(
@@ -169,17 +129,11 @@ export const usePostService = () => {
       'Failed to fetch departments'
     );
 
-  const saveDepartment = async (token, name) =>
+  const saveDepartment = async (name) =>
     execute(
       () =>
         axios
-          .post(
-            `${API}/departments/add`,
-            { name },
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          )
+          .post(`${API}/departments/add`, { name }, { headers: getAuthHeaders(token) })
           .then((res) => res.data),
       'Failed to save department'
     );
@@ -190,51 +144,44 @@ export const usePostService = () => {
       'Failed to load department posts'
     );
 
-  const getTag = async () => {
-    return execute(
-      () =>
-        axios.get(`${API}/tags`).then((res) => {
-          const data = res.data;
-          return data.tags;
-        }),
-      'Failed to fetch tags'
-    );
-  };
+  // ------------------- TAGS -------------------
 
-  const saveTag = async (token, name) => {
-    return execute(
+  const getTag = async () =>
+    execute(() => axios.get(`${API}/tags`).then((res) => res.data.tags), 'Failed to fetch tags');
+
+  const saveTag = async (name) =>
+    execute(
       () =>
         axios
-          .post(`${API}/tags/add`, { name }, { headers: { Authorization: `Bearer ${token}` } })
-          .then((res) => {
-            const data = res.data;
-            return data.tag;
-          }),
+          .post(`${API}/tags/add`, { name }, { headers: getAuthHeaders(token) })
+          .then((res) => res.data.tag),
       'Failed to save tag'
     );
-  };
 
-  const getPostsByTag = async (name) => {
-    return execute(
-      () =>
-        axios.get(`${API}/tags/${encodeURIComponent(name)}`).then((res) => {
-          const data = res.data;
-          return data;
-        }),
+  const getPostsByTag = async (name) =>
+    execute(
+      () => axios.get(`${API}/tags/${encodeURIComponent(name)}`).then((res) => res.data),
       'Failed to load tag posts'
     );
-  };
 
-  const searchPosts = async (query) => {
-    return execute(
+  // ------------------- STATS -------------------
+
+  const getUserStats = async () =>
+    execute(
       () =>
-        axios.get(`${API}/post/search`, { params: { query } }).then((res) => {
-          const data = res.data;
-          return data.posts;
-        }),
+        axios
+          .get(`${API}/stats/user-stats`, { headers: getAuthHeaders(token) })
+          .then((res) => res.data),
+      'Failed to fetch stats'
+    );
+
+  // ------------------- SEARCH -------------------
+
+  const searchPosts = async (query) =>
+    execute(
+      () => axios.get(`${API}/post/search`, { params: { query } }).then((res) => res.data.posts),
       'Failed to search posts'
     );
-  };
 
   return {
     createPost,

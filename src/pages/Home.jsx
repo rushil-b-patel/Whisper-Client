@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { usePostService } from '../context/PostContext';
 import { useAuth } from '../context/AuthContext';
 import { Fire, Sparkles, Clock } from '../ui/Icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { HomeIcon, Chat, Inbox, Create, Departments } from '../ui/Icons';
 import LeftLayout from './LeftLayout';
 import RightLayout from './RightLayout';
@@ -30,10 +30,10 @@ function Home() {
   const { getAllPosts, getDepartments, getUserStats } = usePostService();
   const { user } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const fetchPosts = useCallback(async () => {
     if (isPostsFetchingRef.current) return;
-
     isPostsFetchingRef.current = true;
     try {
       const response = await getAllPosts();
@@ -49,13 +49,12 @@ function Home() {
 
   const _fetchDepartments = useCallback(async () => {
     if (isDepartmentsFetchingRef.current) return;
-
     isDepartmentsFetchingRef.current = true;
     try {
       setDepartmentsLoading(true);
       setDepartmentsError(null);
       const response = await getDepartments();
-      if (response.departments && response.departments.length > 0) {
+      if (response.departments?.length > 0) {
         setDepartments(response.departments);
       } else {
         setDepartments([]);
@@ -114,12 +113,11 @@ function Home() {
     initialLoadRef.current = true;
     fetchPosts();
     _fetchDepartments();
-
     if (user) fetchUserStats();
   }, [user]);
 
   const filteredPosts = useMemo(() => {
-    if (!posts || posts.length === 0) return [];
+    if (!posts?.length) return [];
 
     const safeUpvotes = (p) => Number(p.upVotes || 0);
     const safeDownvotes = (p) => Number(p.downVotes || 0);
@@ -174,15 +172,15 @@ function Home() {
   }, [fetchPosts, _fetchDepartments, fetchUserStats, user]);
 
   return (
-    <div className="h-screen overflow-hidden">
+    <div className="min-h-screen overflow-y-auto bg-bg text-text transition-colors duration-300">
       {showMobileFilter && (
-        <div className="fixed top-16 left-0 w-full z-40 border-b border-gray-200 dark:border-[#2A2B30] md:hidden shadow-sm">
+        <div className="fixed top-16 left-0 w-full z-40 border-b border-gray-200 dark:border-[#2A2B30] md:hidden shadow-sm animate-slide-down bg-white dark:bg-[#131619]">
           {filters.map(({ id, label }) => (
             <button
               key={id}
-              className={`w-full flex items-center px-4 py-3 text-left transition-colors ${
+              className={`w-full flex items-center px-4 py-3 text-left transition-all duration-200 hover:scale-105 ${
                 activeFilter === id
-                  ? 'text-gray-900 dark:text-white bg-gray-100 dark:bg-gray-800 font-medium'
+                  ? 'text-black dark:text-white bg-gray-100 dark:bg-gray-800 font-medium'
                   : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-[#1f2428]'
               }`}
               onClick={() => handleFilterChange(id)}
@@ -190,6 +188,31 @@ function Home() {
               {label}
             </button>
           ))}
+
+          <div className="border-t border-gray-200 dark:border-gray-700 mt-2">
+            {departmentsLoading ? (
+              <div className="p-4 animate-pulse text-sm text-gray-500">Loading departments…</div>
+            ) : departmentsError ? (
+              <div className="p-4 text-sm text-red-600 dark:text-red-400">{departmentsError}</div>
+            ) : (
+              departments.map((dep) => (
+                <button
+                  key={dep._id}
+                  onClick={() => {
+                    setActiveDepartment(dep.name);
+                    setShowMobileFilter(false);
+                  }}
+                  className={`w-full px-4 py-2 text-left transition ${
+                    activeDepartment === dep.name
+                      ? 'bg-gray-100 dark:bg-gray-800 font-medium text-black dark:text-white'
+                      : 'hover:bg-gray-50 dark:hover:bg-[#1f2428] text-gray-600 dark:text-gray-300'
+                  }`}
+                >
+                  {dep.name}
+                </button>
+              ))
+            )}
+          </div>
         </div>
       )}
 
@@ -222,34 +245,30 @@ function Home() {
         />
       </div>
 
-      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-[#131619] border-t border-gray-200 dark:border-[#2A2B30] flex justify-between items-center px-2 py-1 md:hidden">
-        <button onClick={() => navigate('/')} className="flex flex-col items-center flex-1 py-2">
-          <HomeIcon />
-        </button>
-        <button
-          onClick={() => navigate('/departments')}
-          className="flex flex-col items-center flex-1 py-2"
-        >
-          <Departments />
-        </button>
-        <button
-          onClick={() => navigate('/create-post')}
-          className="flex flex-col items-center flex-1 py-2"
-        >
-          <Create />
-        </button>
-        <button
-          onClick={() => navigate('/chat')}
-          className="flex flex-col items-center flex-1 py-2"
-        >
-          <Chat />
-        </button>
-        <button
-          onClick={() => navigate('/inbox')}
-          className="flex flex-col items-center flex-1 py-2"
-        >
-          <Inbox />
-        </button>
+      <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-[#131619] border-t border-gray-200 dark:border-[#2A2B30] flex justify-between items-center px-2 py-1 md:hidden shadow-md">
+        {[
+          { id: '/', icon: <HomeIcon />, label: 'Home' },
+          { id: '/departments', icon: <Departments />, label: 'Departments' },
+          { id: '/create-post', icon: <Create />, label: 'Create' },
+          { id: '/chat', icon: <Chat />, label: 'Chat' },
+          { id: '/inbox', icon: <Inbox />, label: 'Inbox' },
+        ].map(({ id, icon, label }) => {
+          const isActive = location.pathname === id;
+          return (
+            <button
+              key={id}
+              onClick={() => navigate(id)}
+              className={`flex flex-col items-center flex-1 py-2 transition-all duration-200 hover:scale-110 ${
+                isActive
+                  ? 'text-black dark:text-white font-semibold'
+                  : 'text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white'
+              }`}
+            >
+              <span className="w-6 h-6">{icon}</span>
+              <span className="text-xs">{label}</span>
+            </button>
+          );
+        })}
       </nav>
     </div>
   );

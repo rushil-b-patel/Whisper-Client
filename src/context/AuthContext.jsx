@@ -18,11 +18,11 @@ export const AuthProvider = ({ children }) => {
   const [authLoading, setAuthLoading] = useState(true);
   const { execute, isLoading, error, setError, setIsLoading } = useRequest();
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
 
   const verifyAuth = async () => {
     setAuthLoading(true);
     try {
-      const token = localStorage.getItem('token');
       if (!token) {
         setUser(null);
         return;
@@ -112,6 +112,7 @@ export const AuthProvider = ({ children }) => {
         isLoading,
         authLoading,
         error,
+        token,
         setIsLoading,
         setError,
         login,

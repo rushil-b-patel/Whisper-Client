@@ -44,7 +44,7 @@ export default function RightLayout({ user, statsLoading, statsError, userStats,
                 ].map((stat) => (
                   <div
                     key={stat.label}
-                    className="p-3 rounded-lg text-center transition-colors hover:bg-gray-100 dark:hover:bg-[#1f2428] border border-gray-200 dark:border-gray-700"
+                    className="p-3 rounded-lg text-center transition-colors hover:bg-gray-100 dark:hover:bg-[#1f2428] border border-gray-200 dark:border-neutral-800"
                   >
                     <p className="text-xs text-gray-500 dark:text-gray-400">{stat.label}</p>
                     <p className="font-bold text-lg">{stat.value}</p>
@@ -54,9 +54,7 @@ export default function RightLayout({ user, statsLoading, statsError, userStats,
 
               {userStats.recentActivity?.length > 0 ? (
                 <div className="mt-6">
-                  <h3 className="font-semibold  mb-3">
-                    Recent Activity
-                  </h3>
+                  <h3 className="font-semibold  mb-3">Recent Activity</h3>
                   <ul className="space-y-2 text-sm">
                     {userStats.recentActivity.map((activity, i) => (
                       <li

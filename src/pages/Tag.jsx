@@ -16,8 +16,8 @@ function Tag() {
       setIsLoading(true);
       try {
         const res = await getPostsByTag(name);
-        setPosts(res.posts);
-        setTag(res.tag);
+        setPosts(res.posts || []);
+        setTag(res.tag || { name });
       } catch (err) {
         showError('Failed to fetch posts for this tag');
       } finally {
@@ -27,7 +27,17 @@ function Tag() {
     fetchPosts();
   }, [name]);
 
-  if (isLoading) return <div className="flex h-[90vh] justify-center items-center">Loading...</div>;
+  if (isLoading) {
+    return (
+      <div className="max-w-4xl mx-auto py-8 px-4">
+        <div className="animate-pulse space-y-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="h-32 rounded-xl bg-gray-100 dark:bg-[#2A3236]" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
@@ -41,7 +51,9 @@ function Tag() {
           ))}
         </div>
       ) : (
-        <p>No posts for this tag yet.</p>
+        <p className="text-gray-600 dark:text-gray-400 italic">
+          No posts for this tag yet. Be the first to create one!
+        </p>
       )}
     </div>
   );

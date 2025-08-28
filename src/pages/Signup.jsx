@@ -13,7 +13,7 @@ const Signup = () => {
 
   useEffect(() => {
     return () => setError(null);
-  }, [userName, email, password]);
+  }, [setError]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,17 +30,20 @@ const Signup = () => {
 
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-4em)] px-4 py-12">
-      <div className="w-full max-w-md border border-gray-200 dark:border-[#2A2B30] rounded-lg p-8 dark:bg-[#131619]">
-        <h2 className="text-2xl font-bold text-center mb-6">
-          Create Account
-        </h2>
+      <div className="w-full max-w-md border border-gray-200 dark:border-[#2A2B30] rounded-2xl p-8 dark:bg-[#131619] shadow-lg">
+        <h2 className="text-3xl font-bold text-center mb-6">Create Account</h2>
+        {error && (
+          <div className="mb-4 p-3 text-sm rounded-md bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300">
+            {error}
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="block text-sm font-medium mb-1">Username</label>
             <input
               type="text"
               placeholder="Username"
-              className="w-full px-3 py-2 rounded-md bg-white dark:bg-[#2A3236] dark:text-[#eef1f3] border border-gray-300 dark:border-[#2A2B30] placeholder-gray-400 focus:outline-none transition"
+              className="w-full px-3 py-2 rounded-md bg-white dark:bg-[#2A3236] dark:text-[#eef1f3] border border-gray-300 dark:border-[#2A2B30] placeholder-gray-400 transition"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
               required
@@ -71,7 +74,7 @@ const Signup = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword((prev) => !prev)}
-                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500"
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
               >
                 {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
@@ -81,7 +84,7 @@ const Signup = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full flex justify-center py-2 px-4 rounded-md text-sm font-medium text-white hover:text-black bg-black hover:bg-white border-[2px] border-transparent hover:border-black transition animation duration-500 ease-in-out"
+            className="w-full flex justify-center py-2 px-4 rounded-md text-sm font-medium text-white bg-black hover:bg-white hover:text-black border-2 border-black dark:border-white dark:bg-white dark:text-black dark:hover:bg-black dark:hover:text-white transition duration-300 ease-in-out"
           >
             {isLoading ? 'Creating account...' : 'Sign Up'}
           </button>
@@ -99,16 +102,17 @@ const Signup = () => {
             <div className="w-full border-t border-gray-300 dark:border-gray-700" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span>
+            <span className="px-2 bg-white dark:bg-[#131619] text-gray-500 dark:text-gray-400">
               Or continue with
             </span>
           </div>
         </div>
 
-        <div className="flex justify-center"> 
+        <div className="flex justify-center">
           <GoogleLogin
             onSuccess={handleGoogleSignup}
             onError={() => setError('Google signup failed.')}
+            useOneTap
           />
         </div>
       </div>

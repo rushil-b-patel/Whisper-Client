@@ -1,3 +1,5 @@
+import { useNavigate } from 'react-router-dom';
+
 export default function LeftLayout({
   activeFilter,
   handleFilterChange,
@@ -15,13 +17,13 @@ export default function LeftLayout({
     const stopWords = ['and', '&', 'of', 'the', '(', ')', 'in', 'for'];
     const words = name.split(' ').filter((w) => w && !stopWords.includes(w.toLowerCase()));
 
-    let initials = words
+    return words
       .slice(0, 2)
       .map((w) => w[0].toUpperCase())
       .join('');
-
-    return initials;
   };
+
+  const navigate = useNavigate();
 
   return (
     <aside className="hidden md:block md:w-64 lg:w-72 h-full overflow-y-auto px-2 py-4">
@@ -50,7 +52,10 @@ export default function LeftLayout({
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">Departments</h2>
           {!departmentsLoading && departments.length > 5 && (
-            <button className="text-gray-600 dark:text-gray-400 text-sm hover:text-gray-900 dark:hover:text-white hover:underline transition-colors">
+            <button
+              onClick={() => navigate('/departments')}
+              className="text-gray-600 dark:text-gray-400 text-sm hover:text-gray-900 dark:hover:text-white hover:underline transition-colors"
+            >
               See All
             </button>
           )}
@@ -95,7 +100,7 @@ export default function LeftLayout({
                             : 'font-medium text-gray-900 dark:text-white'
                         }`}
                       >
-                        {getDeptInitials(dept.name)}
+                        {dept.name}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
                         {dept.memberCount || 0} members

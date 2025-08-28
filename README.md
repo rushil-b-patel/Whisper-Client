@@ -13,6 +13,7 @@ It provides a seamless interface for users to share posts, comment, upvote/downv
 ---
 
 ## 📑 Table of Contents
+
 - [About The Project](#-about-the-project)
 - [Features](#-features)
 - [Tech Stack](#-tech-stack)
@@ -29,7 +30,9 @@ It provides a seamless interface for users to share posts, comment, upvote/downv
 ---
 
 ## 📖 About The Project
+
 Whisper enables students and communities to:
+
 - Share knowledge via posts.
 - Engage in topic-specific departments (CS, IT, AI/ML, etc.).
 - Interact with upvotes, downvotes, and comments.
@@ -38,6 +41,7 @@ Whisper enables students and communities to:
 ---
 
 ## ✨ Features
+
 - 🔐 Authentication (JWT + Google Login)
 - 📝 Rich-text post creation with tags
 - 💬 Comments with voting
@@ -49,6 +53,7 @@ Whisper enables students and communities to:
 ---
 
 ## 🏗 Tech Stack
+
 - **Frontend**: React 18, Vite, TailwindCSS
 - **State Management**: Context API
 - **Routing**: React Router
@@ -58,6 +63,7 @@ Whisper enables students and communities to:
 ---
 
 ## ⚙️ Installation
+
 ```bash
 # Clone repository
 git clone https://github.com/rushil-b-patel/Whisper-Client.git
@@ -72,3 +78,4 @@ cp .env.sample .env
 
 # Fire up the Frontend
 npm run dev
+```
